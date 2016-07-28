@@ -12,7 +12,8 @@
     "mocha": "^2.4.5"
   },
   "scripts": {
-    "test1": "mocha --compilers js:babel-register --watch test/basic.js"
+    "test1": "mocha --compilers js:babel-register --watch test/basic.js",
+    "test2": "mocha --compilers js:babel-register --watch test/promising.js"
   },
   "author": "Jonathan Lin",
   "license": "MIT"

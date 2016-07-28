@@ -1,6 +1,6 @@
 import assert from 'assert';
 
-// Some of these are from http://tddbin.com/
+// Tests in this file are from http://tddbin.com/
 
 describe('a Promise represents an operation that hasn`t completed yet, but is expected in the future', function() {
   it('`Promise` is a global function', function() {
