@@ -48,15 +48,15 @@ describe('a Promise represents an operation that hasn`t completed yet, but is ex
       });
 
       promise
-        .then(() => done(new Error('The promise is expected to be rejected.')))
+        .then(() => done(new Error('The promise should be rejected instead.')))
         .catch(() => done());
     });
   });
 
   describe('an asynchronous promise', function() {
     it('can resolve later, also by calling the first callback', function(done) {
-      let promise = new Promise(() => {
-        setTimeout(() => resolve(), 100);
+      let promise = new Promise((/* change me */) => {
+        setTimeout(resolve, 100);
       });
 
       promise
@@ -66,7 +66,7 @@ describe('a Promise represents an operation that hasn`t completed yet, but is ex
 
     it('reject it at some later point in time, calling the 2nd callback', function(done) {
       let promise = new Promise((reject) => { // change something in this line
-        setTimeout(() => reject(), 100);
+        setTimeout(reject, 100);
       });
 
       promise
