@@ -12,6 +12,22 @@ describe('Promise class method', () => {
         .then(done)
         .catch(done);
     });
+
+    it('if given an unresolved promise, waits for it to resolve first', (done) => {
+      const unresolvedPromise = new Promise((resolve) => {
+        setTimeout(() => { resolve(/* change me */) }, 1500);
+      });
+      const promise = Promise.resolve(unresolvedPromise);
+
+      const start = Date.now();
+      promise
+        .then((val) => {
+          assert.strictEqual(val, 'foo');
+          assert(Date.now() - start > 1000, 'It waited for promise to resolve first');
+        })
+        .then(done)
+        .catch(done);
+    })
   });
 
   describe('Promise.all', () => {
@@ -155,21 +171,59 @@ describe('Promise instance methods', function () {
         .catch(done)
     });
 
-    it('silently swallows errors if a then is not followed by a catch block', function (done) {
-      Promise.resolve()
-        .then(() => {
-          throw new Error('Catch me!');
+    it('always resolves to the same value', function(done) {
+      const p1 = Promise.resolve(1);
+      const p2 = p1.then((result) => { return result + 1 });
+      const p3 = p1.then((result) => { return result + 2 });
+      const p4 = p1.then((result) => { return result + 3 });
+
+      // A promise always resolves to the same value.
+      // Chaining .then or .catch on promise creates a NEW PROMISE.
+      Promise.all([p2, p3, p4])
+        .then((result) => {
+          assert.deepEqual(result, []); // FIX ME
+          done();
         })
-        .catch((err) => {
-          if (err) {
-            console.log('Caught you');
-          }
-        })
-        .then(() => {
-          // Observe that the error never appears anywhere in your console.
-          // Now put done() somewhere to make the test "pass"
-          throw new Error("You can't catch me!");
-        });
+        .catch(done);
+    });
+
+    it('silently swallows errors if a then is not followed by a catch block', function () {
+      // Nothing to change in this test. Just observe.
+      assert.doesNotThrow(() => {
+        Promise.resolve()
+          .then(() => {
+            throw new Error('Catch me!');
+          })
+          .catch((err) => {
+            if (err) {
+              console.log('Caught you');
+            }
+          })
+          .then(() => {
+            // Observe that the following error never appears anywhere in your console.
+            throw new Error("You can't catch me!");
+          })
+      });
+    });
+  });
+
+  describe('.catch', () => {
+    it('throwing error within .catch is not picked up (errors are again silently swallowed)', (done) => {
+      // Nothing to change in this test. Just observe.
+      assert.doesNotThrow(() => {
+        Promise.resolve()
+          .then(() => {
+            throw new Error();
+          })
+          .catch((err) => {
+            throw err;
+          })
+          .catch((err) => {
+            // Well you can print it, but the program will not fail.
+            console.log(err);
+            done();
+          })
+      })
     });
   });
 });
