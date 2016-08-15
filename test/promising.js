@@ -30,6 +30,32 @@ describe('Promise class method', () => {
     })
   });
 
+  describe('Promise.reject', () => {
+    it('returns a Promise rejected with a reason', (done) => {
+      Promise.reject() // change me
+        .then((val) => {
+          done(new Error('Should not come here'));
+        })
+        .catch((reason) => {
+          assert.strictEqual(reason, 'A reason');
+          done();
+        })
+        .catch(done);
+    });
+
+    it('returns a Promise rejected with an error', (done) => {
+      Promise.reject(new Error('An error message'))
+        .then((val) => {
+          done(new Error('Should not come here'));
+        })
+        .catch((err) => {
+          assert.strictEqual(err.message, 'REPLACE ME');
+          done();
+        })
+        .catch(done);
+    })
+  });
+
   describe('Promise.all', () => {
     it('returns a promise which resolves when all the promises resolve', (done) => {
       var p1 = Promise.resolve(3);
