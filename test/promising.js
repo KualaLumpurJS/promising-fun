@@ -163,13 +163,25 @@ describe('Promise instance methods', function () {
       }).catch(done);
     });
 
+    it('the second param to .then can catch error from the previous promise', function (done) {
+      new Promise(function (resolve, reject) {
+        reject(new Error('Oops')); // change me
+      })
+        .then(function () {
+          throw new Error('From then');
+        }, function (err) {
+          assert.strictEqual(err.message, 'FIX ME');
+          done();
+        })
+        .catch(done);
+    });
+
     it('but .catch is the preferred way to handle rejection', function (done) {
       new Promise(function (resolve, reject) {
         resolve(1); // change me
       }).then(function () {
         done(new Error('This promise should have been rejected'));
       }).catch(function (reason) {
-        console.log('FOOBAR');
         assert.strictEqual(reason, 'REASON FOR ERROR');
         done();
       }).catch(done)
