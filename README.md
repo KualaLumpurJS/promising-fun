@@ -7,6 +7,7 @@ You need to have Node installed. Visit https://nodejs.org/en/ to download and in
 Run the following:
 
 ```
+npm install
 npm install mocha -g
 ```
 
