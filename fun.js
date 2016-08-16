@@ -23,13 +23,13 @@ axios.get('https://jsonplaceholder.typicode.com/todos')
     });
 
     // TODO: YOUR CODE HERE to call https://jsonplaceholder.typicode.com/users and merge the data
-
     // return new Promise(...)...
   })
   .catch((err) => { console.error('FAILED TEST', err.message); }) // have to print, because Promises swallow errors
   .then((result) => {
     // Let's say that instead of that as a front end developer (for some reason) what I really
     // want is something that looks like this:
+    console.log(result[0]);
     assert.deepEqual(result[0], {
       id: 1,
       title: "delectus aut autem",
@@ -56,5 +56,6 @@ axios.get('https://jsonplaceholder.typicode.com/todos')
 
     // Notice that right above we fired off two promises in succession, without chaining them together.
     // This means that we executed both in PARALLEL, each working independently of each other.
+    // The first promise, we did not bother chain it to get a return value.
   })
   .catch((err) => { console.error('FAILED TEST', err.message); });
